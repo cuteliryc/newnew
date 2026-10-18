@@ -214,7 +214,19 @@ def match_cases(req, cases, top=8):
         if s > 0:
             ranked.append({**c, "_match": round(s, 2), "_overlap": sorted(overlap)})
     ranked.sort(key=lambda c: c["_match"], reverse=True)
-    return ranked[:top]
+    # Разнообразие: не больше трёх кейсов на один канал и на один рычаг.
+    picked, per_channel, per_lever = [], {}, {}
+    for c in ranked:
+        ch = (c["_overlap"] or c.get("channels") or ["—"])[0]
+        lever = (c.get("levers") or ["—"])[0]
+        if per_channel.get(ch, 0) >= 3 or per_lever.get(lever, 0) >= 3:
+            continue
+        per_channel[ch] = per_channel.get(ch, 0) + 1
+        per_lever[lever] = per_lever.get(lever, 0) + 1
+        picked.append(c)
+        if len(picked) >= top:
+            break
+    return picked
 
 
 def hypotheses_from_cases(cases, econ, req):

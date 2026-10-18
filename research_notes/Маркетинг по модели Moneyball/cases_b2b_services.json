@@ -1019,7 +1019,7 @@
     "levers": ["offer", "channel", "process"],
     "metrics": [
       {"name": "referrals_per_year", "before": null, "after": 5691, "change_pct": null, "note": "5 691 рекомендация за год"},
-      {"name": "referral_conversion_rate", "before": null, "after": 66, "change_pct": null, "note": "66% рекомендованных стали клиентами (3 758 по вторичному изложению)"}
+      {"name": "referral_conversion_rate", "before": null, "after": 66, "change_pct": null, "note": "66% рекомендованных стали клиентами: 5 691 лид → 3 758 конверсий (обе цифры на странице)"}
     ],
     "period": "1 год; публикация 2024-02-01",
     "year": 2024,
