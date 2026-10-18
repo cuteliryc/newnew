@@ -40,6 +40,31 @@ const PR_DEFAULTS = {
 };
 const DEFAULT_CHANNELS = ["telegram_ads", "vk_ads", "yandex_direct", "cold_telegram", "cold_email"];
 
+
+/* ---------- герой: пиксельный скаут с облаками (свой персонаж, статичный при reduced motion) ---------- */
+const HERO_COLORS = { B: "#4f6e59", b: "#3f5a48", C: "#e2775a", c: "#c4614a", E: "#1c1c1e", W: "#ffffff", M: "#9c4a34" };
+const HERO_FACES = {
+  idle:     ["....BBBB....", "...BBBBBB...", "..BBBBBBBbb.", "..CCCCCCCC..", ".CCCCCCCCCC.", ".CCEECCEECC.", ".CCEECCEECC.",
+             ".CCCCCCCCCC.", ".CCCCMMCCCC.", "..CCCCCCCC..", "..cc....cc..", "..EE....EE.."],
+  thinking: ["....BBBB....", "...BBBBBB...", "..BBBBBBBbb.", "..CCEECCEE..", ".CCCEECCEECC", ".CCCCCCCCCC.", ".CCCCCCCCCC.",
+             ".CCCCCCCCCC.", ".CCCCMCCCCC.", "..CCCCCCCC..", "..cc....cc..", "..EE....EE.."],
+  happy:    ["....BBBB....", "...BBBBBB...", "..BBBBBBBbb.", "..CCCCCCCC..", ".CCCCCCCCCC.", ".CCECCCCECC.", ".CEWECCEWEC.",
+             ".CCCCCCCCCC.", ".CCMCCCCMCC.", "..CCMMMMCC..", "..cc....cc..", "..EE....EE.."],
+  sad:      ["....BBBB....", "...BBBBBB...", "..BBBBBBBbb.", "..CCCCCCCC..", ".CCCCCCCCCC.", ".CCEECCEECC.", ".CCCCCCCCCC.",
+             ".CCCCCCCCCC.", ".CCCMMMMCCC.", "..CMCCCCMC..", "..cc....cc..", "..EE....EE.."],
+};
+function setHero(state, phrase) {
+  const rows = HERO_FACES[state] || HERO_FACES.idle;
+  let rects = "";
+  rows.forEach((row, y) => [...row].forEach((ch, x) => {
+    if (HERO_COLORS[ch]) rects += `<rect x="${x}" y="${y}" width="1" height="1" fill="${HERO_COLORS[ch]}"/>`;
+  }));
+  const hero = $("#hero");
+  hero.innerHTML = rects;
+  hero.classList.toggle("thinking", state === "thinking");
+  if (phrase !== undefined) $("#bubble").textContent = phrase;
+}
+
 /* ---------- утилиты ---------- */
 const store = {
   get(k, d) { try { const v = localStorage.getItem("mb:" + k); return v === null ? d : JSON.parse(v); } catch { return d; } },
@@ -58,12 +83,21 @@ function setStatus(text, kind = "loading") {
   $("#status").className = "status " + kind;
   $("#status-text").textContent = text;
 }
+const fmt = (x, cur = "₽") => x === null || x === undefined || Number.isNaN(x) ? "—"
+  : Math.round(x).toLocaleString("ru-RU") + (cur ? " " + cur : "");
+const pct = x => x === null || x === undefined ? "—" : (x >= 0 ? "+" : "") + Math.round(x * 100) + "%";
 async function busy(btn, fn) {
   const label = btn.innerHTML;
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span> Считаю…';
+  setHero("thinking", "считаю…");
   await new Promise(r => setTimeout(r, 40));
-  try { await fn(); } catch (e) { console.error(e); alert("Ошибка: " + (e.message || e).toString().slice(-600)); }
+  try { await fn(); setHero("happy", "готово"); }
+  catch (e) {
+    console.error(e);
+    setHero("sad", "что-то пошло не так");
+    alert("Не получилось посчитать. Введённое сохранено.\n\n" + (e.message || e).toString().slice(-600));
+  }
   finally { btn.disabled = false; btn.innerHTML = label; }
 }
 function saveForm(form, key) {
@@ -105,16 +139,17 @@ function initTabs() {
 /* ---------- Неделя ---------- */
 function initWeek() {
   $("#file-inputs").innerHTML = DATA.map(([name, title, desc]) => `
-    <div class="file-card" data-file="${name}">
-      <b>${title}</b><p>${desc}</p>
-      <input type="file" accept=".csv,text/csv">
-      <div class="row"><a href="app/templates/data/${name}" download>шаблон ${name}</a><span class="st muted"></span></div>
+    <div class="row" data-file="${name}">
+      <div><div class="t">${title}</div><div class="d">${desc}</div></div>
+      <div class="side"><span class="chip st">нет данных</span>
+        <a href="app/templates/data/${name}" download>шаблон</a>
+        <label class="upload">Загрузить CSV<input type="file" accept=".csv,text/csv" aria-label="${title}: загрузить CSV"></label></div>
     </div>`).join("");
-  $$("#file-inputs .file-card").forEach(card => {
-    $("input", card).addEventListener("change", async e => {
+  $$("#file-inputs .row").forEach(row => {
+    $("input", row).addEventListener("change", async e => {
       const f = e.target.files[0];
       if (!f) return;
-      state.files[card.dataset.file] = await f.text();
+      state.files[row.dataset.file] = await f.text();
       markLoaded();
     });
   });
@@ -123,19 +158,75 @@ function initWeek() {
       const r = await fetch("app/examples/demo/" + name);
       if (r.ok) state.files[name] = await r.text();
     }
-    markLoaded("демо (вымышленные данные)");
+    markLoaded("демо — вымышленные данные");
   });
   $("#btn-week").addEventListener("click", e => busy(e.currentTarget, () => {
     const res = JSON.parse(web.run_weekly(JSON.stringify(state.files)));
+    renderSummary(res.engine);
     md($("#week-out"), res.report);
-    $("#week-out").scrollIntoView({ behavior: "smooth", block: "start" });
+    $("#week-details").hidden = false;
+    $("#week-summary").scrollIntoView({ behavior: "smooth", block: "start" });
   }));
 }
+
+/* Человеческие названия вместо технических ключей. */
+const CH = { cold_telegram: "холодный Telegram", cold_instagram: "холодный Instagram", cold_email: "холодные письма",
+  telegram_ads: "Telegram Ads", telegram_seeding: "посевы в Telegram", vk_ads: "VK Реклама", yandex_direct: "Яндекс Директ",
+  instagram_organic: "Instagram (органика)", avito: "Avito", seo: "SEO", email: "email-рассылки", influencers: "блогеры" };
+const STAGE = { impressions: "касание", clicks: "ответ", leads: "заявка", qualified: "оффер", deals: "сделка" };
+const TAG = { hook: "хук", angle: "угол", format: "формат", layout: "компоновка", persona: "аудитория", offer: "оффер",
+  cta: "кнопка", text_density: "доля текста" };
+const chName = k => CH[k] || k;
+const stageName = s => s.split("→").map(x => STAGE[x] || x).join(" → ");
+
+/* Ответ сначала: одно главное число и 3–4 вывода, потом полный отчёт. */
+function renderSummary(e) {
+  const f = e.funnel, items = [];
+  if (f && f.status === "ok") {
+    let worst = null;
+    for (const g of f.groups.channel || []) {
+      if (g.bottleneck && (!worst || g.bottleneck.gain_per_1000 > worst.b.gain_per_1000)) worst = { g, b: g.bottleneck };
+    }
+    const best = (f.groups.channel || [])[0];
+    if (best) items.push(["accent", "↗", `Больше всего прибыли на касание даёт <b>${esc(chName(best.group.channel))}</b> — ${fmt(best.profit_per_1000)} на 1000.`]);
+    if (worst) items.push(["warn", "!", `Дороже всего теряем в <b>${esc(chName(worst.g.group.channel))}</b> на шаге «${esc(stageName(worst.b.stage))}»: если подтянуть до среднего — +${fmt(worst.b.gain_per_1000)} на 1000.`]);
+  }
+  const b = e.budget;
+  if (b && b.status === "ok") {
+    const moves = Object.entries(b.allocation.plan).filter(([, r]) => r.change_pct !== null && Math.abs(r.change_pct) >= .05)
+      .sort((x, y) => y[1].change_pct - x[1].change_pct);
+    if (moves.length) items.push(["accent", "₽", "Бюджет на неделю: " + moves.map(([ch, r]) => `${esc(chName(ch))} ${pct(r.change_pct)}`).join(", ") + "."]);
+    if (b.allocation.underfunded && b.allocation.underfunded.length)
+      items.push(["ok", "＋", `В ${b.allocation.underfunded.map(x => esc(chName(x))).join(" и ")} следующий рубль окупается с запасом — общий бюджет можно растить шагами 10–30%.`]);
+  }
+  const c = e.creatives;
+  if (c && c.status === "ok" && c.winners.length) {
+    const w = c.winners[0];
+    items.push(["ok", "★", `Креатив: ${esc(TAG[w.tag] || w.tag)} «${esc(w.value)}» даёт ${pct(w.lift_vs_rest)} к остальным — подтвердить split-тестом.`]);
+  }
+  const q = e.experiments && e.experiments.queue && e.experiments.queue[0];
+  if (q) items.push(["accent", "→", `Следующий тест: ${esc(q.hypothesis)}.`]);
+  const total = f && f.status === "ok" ? f.total : null;
+  $("#week-summary").innerHTML = `
+    <div class="group-title">Главное за неделю</div>
+    <div class="summary">
+      <div class="big"><div class="label">Прибыль после маркетинга</div>
+        <div class="num">${total ? fmt(total.realized_profit) : "—"}</div>
+        <div class="sub">${total ? `${fmt(total.profit_per_1000)} на 1000 касаний` : "нет таблицы воронки"}</div>
+        ${total ? `<div class="kv"><span>Выручка</span><b>${fmt(total.revenue)}</b></div>
+        <div class="kv"><span>Затраты (реклама + часы)</span><b>${fmt(total.cost)}</b></div>
+        <div class="kv"><span>Сделок</span><b>${Math.round(total.deals)}</b></div>` : ""}</div>
+      <div class="group findings">${items.length ? items.map(([k, icon, text]) =>
+        `<div class="row"><span class="ico chip ${k}">${icon}</span><div>${text}</div></div>`).join("")
+        : `<div class="row"><span class="ico chip">i</span><div>Для выводов нужны таблицы воронки, креативов или бюджета.</div></div>`}</div>
+    </div>`;
+}
 function markLoaded(note) {
-  $$("#file-inputs .file-card").forEach(card => {
-    const ok = !!state.files[card.dataset.file];
-    card.classList.toggle("loaded", ok);
-    $(".st", card).textContent = ok ? "загружено ✓" : "";
+  $$("#file-inputs .row").forEach(row => {
+    const ok = !!state.files[row.dataset.file];
+    const chip = $(".st", row);
+    chip.className = "chip st" + (ok ? " ok" : "");
+    chip.textContent = ok ? "✓ загружено" : "нет данных";
   });
   const n = Object.keys(state.files).length;
   $("#week-loaded").textContent = n ? `Таблиц: ${n}${note ? " — " + note : ""}` : "";
@@ -236,18 +327,22 @@ function initPR() {
   if (!saved) state.pr.answers = defaults;
 
   $("#pr-criteria").innerHTML = Object.entries(form.blocks).map(([block, crits]) => `
-    <div class="block-title"><span>${esc(block)}</span><span class="muted small" data-block="${esc(block)}"></span></div>
-    ${Object.entries(crits).map(([k, c]) => `
-      <div class="crit"><div>${esc(c.q)} <span class="w">вес ${c.w}</span></div>
-        <div class="seg" data-k="${k}">${[0, 0.5, 1].map(x =>
-          `<button type="button" data-v="${x}">${x === 0 ? "нет" : x === 1 ? "да" : "½"}</button>`).join("")}</div></div>`).join("")}
-  `).join("");
+    <div class="group-title">${esc(block)} · <span data-block="${esc(block)}"></span></div>
+    <div class="group">${Object.entries(crits).map(([k, c]) => `
+      <div class="crit"><div>${esc(c.q)} <span class="w">· вес ${c.w}</span></div>
+        <div class="seg" role="radiogroup" data-k="${k}">${[0, 0.5, 1].map(x =>
+          `<button type="button" role="radio" data-v="${x}">${x === 0 ? "нет" : x === 1 ? "да" : "частично"}</button>`).join("")}</div></div>`).join("")}
+    </div>`).join("");
   $("#pr-flags").innerHTML = Object.entries(form.flags).map(([k, q]) =>
     `<label class="check"><input type="checkbox" data-flag="${k}" ${state.pr.flags[k] ? "checked" : ""}> ${esc(q)}</label>`).join("");
 
   const paint = () => $$(".seg").forEach(seg => {
     const v = state.pr.answers[seg.dataset.k] ?? 0;
-    $$("button", seg).forEach(b => b.classList.toggle("on", Number(b.dataset.v) === Number(v)));
+    $$("button", seg).forEach(b => {
+      const on = Number(b.dataset.v) === Number(v);
+      b.classList.toggle("on", on);
+      b.setAttribute("aria-checked", on);
+    });
   });
   const rescore = () => {
     const idea = { title: $("#pr-form [name=title]").value, answers: state.pr.answers, stop_flags: state.pr.flags };
@@ -295,23 +390,27 @@ function initTests() {
     e.preventDefault();
     const f = new FormData(e.target);
     const r = JSON.parse(web.run_abtest(+f.get("ca"), +f.get("na"), +f.get("cb"), +f.get("nb")));
-    const pct = x => (x * 100).toFixed(1) + "%";
-    $("#ab-out").innerHTML = `<p><b>P(B лучше A) = ${r.p_b_better.toFixed(3)}</b><br>
-      Прирост B к A: ${r.lift_mean >= 0 ? "+" : ""}${pct(r.lift_mean)} (90%: ${pct(r.lift_low)} … ${pct(r.lift_high)})</p>
-      <p class="muted small">Решение — только когда набран запланированный объём. Порог системы: 0.95.</p>`;
+    
+    const p1 = x => (x >= 0 ? "+" : "") + (x * 100).toFixed(1) + "%";
+    $("#ab-out").innerHTML = `<div class="label muted small">Вероятность, что B лучше A</div>
+      <div style="font-size:34px;font-weight:750;letter-spacing:-.03em">${Math.round(r.p_b_better * 100)}%</div>
+      <p class="muted small">Прирост B к A: ${p1(r.lift_mean)} (90%: ${p1(r.lift_low)} … ${p1(r.lift_high)}).
+      Решение — когда набран запланированный объём и вероятность ≥ 95%.</p>`;
   });
   $("#ss-form").addEventListener("submit", e => {
     e.preventDefault();
     const f = new FormData(e.target);
     try {
       const n = web.run_sample_size(+f.get("p"), +f.get("mde"));
-      $("#ss-out").innerHTML = `<p><b>≈${Number(n).toLocaleString("ru-RU")} попыток на вариант</b></p>
+      $("#ss-out").innerHTML = `<div class="label muted small">Нужно на каждый вариант</div>
+        <div style="font-size:34px;font-weight:750;letter-spacing:-.03em">≈${Number(n).toLocaleString("ru-RU")}</div>
         <p class="muted small">Если трафика меньше — тестируйте крупные различия (угол, оффер), а не отдельные слова.</p>`;
     } catch (err) { $("#ss-out").textContent = "Проверьте числа: доли должны быть между 0 и 1."; }
   });
 }
 
 /* ---------- База знаний ---------- */
+const EV = { strong: ["сильное доказательство", "ok"], medium: ["среднее", "accent"], weak: ["слабое", ""], vendor: ["данные площадки / вендора", "warn"] };
 async function initKB() {
   const cases = state.catalog.cases;
   const files = [...new Set(cases.map(c => c._file))];
@@ -327,14 +426,14 @@ async function initKB() {
     $("#kb-count").textContent = `Кейсов: ${list.length}`;
     $("#kb-cases").innerHTML = list.slice(0, 120).map(c => `
       <div class="case">
-        <span class="tag ${esc(c.evidence)}">${esc(c.evidence)}</span><span class="tag">${esc(c.market)}</span>
-        ${(c.channels || c.news_values || []).slice(0, 4).map(x => `<span class="tag">${esc(x)}</span>`).join("")}
+        <span class="chip ${EV[c.evidence] ? EV[c.evidence][1] : ""}">${EV[c.evidence] ? EV[c.evidence][0] : esc(c.evidence)}</span>
+        <span class="muted small">&nbsp;${esc(c.market || "")}${c.year ? " · " + c.year : ""}</span>
         <h4>${esc(c.title)}</h4>
         <p>${esc(c.what_they_did)}</p>
         ${c.mechanism || c.why_media_covered ? `<p class="muted">Почему: ${esc(c.mechanism || c.why_media_covered)}</p>` : ""}
         ${c.test_to_run ? `<p><b>Тест:</b> ${esc(c.test_to_run)}</p>` : ""}
         ${c.risks_or_backlash ? `<p class="muted">Риски: ${esc(c.risks_or_backlash)}</p>` : ""}
-        <p><a href="${esc(c.source_url)}" target="_blank" rel="noopener">источник</a></p>
+        <p class="src"><a href="${esc(c.source_url)}" target="_blank" rel="noopener">Источник ↗</a></p>
       </div>`).join("");
   };
   ["#kb-q", "#kb-file", "#kb-ev"].forEach(s => $(s).addEventListener("input", render));
@@ -346,6 +445,7 @@ async function initKB() {
 /* ---------- загрузка ---------- */
 async function boot() {
   initTabs();
+  setHero("thinking", "загружаю Python…");
   try {
     py = await loadPyodide();
     setStatus("Загружаю numpy и Pillow…");
@@ -364,10 +464,12 @@ async function boot() {
     state.catalog = JSON.parse(web.catalog_json());
     initWeek(); initPlan(); initBanners(); initPR(); initTests(); await initKB();
     $$("button[disabled]").forEach(b => { if (!["dl-plan", "dl-manifest"].includes(b.id)) b.disabled = false; });
-    setStatus(`Готово · кейсов в базе: ${state.catalog.cases.length}`, "ready");
+    setStatus(`Готово · в базе ${state.catalog.cases.length} кейсов`, "ready");
+    setHero("idle", "загрузите таблицы или возьмите демо");
   } catch (e) {
     console.error(e);
-    setStatus("Не удалось загрузить: " + (e.message || e), "error");
+    setStatus("Не удалось загрузить: " + (e.message || e) + ". Обновите страницу.", "error");
+    setHero("sad", "не загрузилось");
   }
 }
 boot();
