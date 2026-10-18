@@ -104,11 +104,15 @@ def test_planner_unit_economics():
     assert math.isclose(econ["target_cpl"], 53200 / 3 * 0.1)
 
 
-def test_pr_score_flags_and_brand_link():
-    weak = pr.score_idea({"answers": {"surprise": 2, "conflict": 2, "brand_link": 0}})
-    assert "не о вас" in weak["verdict"]
-    flagged = pr.score_idea({"answers": {k: 2 for k in pr.CRITERIA}, "red_flags": {"misleading": True}})
-    assert flagged["red_flags"]
+def test_pr_score_rules():
+    full = {k: 1 for k in pr.CRITERIA}
+    assert pr.score_idea({"answers": full})["score"] == 100
+    no_product = pr.score_idea({"answers": {**full, "C1_product_hero": 0}})
+    assert "не о вас" in no_product["verdict"]
+    few_news = pr.score_idea({"answers": {"A1_surprise": 1, "C1_product_hero": 1}})
+    assert "мало новостных" in few_news["verdict"]
+    flagged = pr.score_idea({"answers": full, "stop_flags": {"unlimited": True}})
+    assert flagged["stop_flags"] and flagged["verdict"].startswith("стоп")
 
 
 def test_agent_parsing(tmp_path):

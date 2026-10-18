@@ -210,14 +210,17 @@ def cmd_pr(args, cfg):
         res = pr.score_idea(idea)
         out = Path(args.out) / "pr" / f"{Path(args.file).stem}.md"
         out.parent.mkdir(parents=True, exist_ok=True)
-        out.write_text(pr.render_score(idea, res, pr.similar_cases(idea, cases)), encoding="utf-8")
+        out.write_text(pr.render_score(idea, res, pr.similar_cases(idea, cases),
+                                       pr.similar_cases(idea, cases, top=3, anti=True)), encoding="utf-8")
         print(f"Оценка: {res['score']}/100 — {res['verdict']}\nПодробно: {out}")
+        cal = pr.calibration(read_csv(Path(args.data) / "pr_log.csv"))
+        print(f"Журнал прогнозов: {cal['runs']} запусков с фактом. {cal['note']}")
     else:
         brief = _load_json(args.file)
         ideas = pr.generate_ideas(brief, cases)
         out = Path(args.out) / "pr" / f"{Path(args.file).stem}_ideas.md"
         out.parent.mkdir(parents=True, exist_ok=True)
-        out.write_text(pr.render_ideas(brief, ideas), encoding="utf-8")
+        out.write_text(pr.render_ideas(brief, ideas, cases), encoding="utf-8")
         print(f"Идей: {len(ideas)} → {out}")
 
 
