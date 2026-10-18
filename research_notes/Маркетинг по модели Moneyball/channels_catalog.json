@@ -1,0 +1,669 @@
+{
+  "channels": {
+    "yandex_direct": {
+      "name": "Яндекс Директ (Поиск, РСЯ, ЕПК, Мастер кампаний, товарные кампании, «Продажи на маркетплейсах», «Панорама»)",
+      "markets": [
+        "RU",
+        "BY",
+        "KZ",
+        "UZ",
+        "TR"
+      ],
+      "available_from_ru": true,
+      "best_for": [
+        "leads",
+        "sales"
+      ],
+      "business_models": [
+        "b2c_ecom",
+        "marketplace_seller",
+        "local_services",
+        "b2b_services",
+        "b2c_high_ticket"
+      ],
+      "intent": "search",
+      "min_budget_note": "Минимальный платёж 300 ₽ без НДС; минимальный недельный бюджет 300 ₽ (9 BYN). «Панорама» с сентября 2026 — без минимального бюджета. НДС 22% сверху.",
+      "strengths": "Горячий поисковый спрос; ЕПК (поиск + РСЯ + Карты); офлайн-конверсии (ТЕХНОНИКОЛЬ: выручка ×2,5); «Персонализация» и комбинаторные объявления; оплата за конверсии с ограничением ДРР; внешний трафик на карточки WB/Ozon; реклама в Telegram и MAX из одного кабинета; встроенный ОРД и автоматическая маркировка.",
+      "weaknesses": "Перегретые аукционы в конкурентных нишах (лид в поиске по недвижимости в Адыгее — 6 705 ₽); автостратегиям нужны данные; 11–14.10.2026 интерфейс был недоступен из-за повреждения инфраструктуры, после этого — ограничения на создание и изменение кампаний.",
+      "requirements": "Аккаунт Яндекса, данные рекламодателя для ОРД/ЕРИР; Метрика и цели; для BY — оплата в BYN на ООО «Яндекс Реклама» (Минск); для UZ — счёт от ИП ООО «TashGisTechnologies» с НДС 12%.",
+      "source_urls": [
+        "https://yandex.ru/support/direct/ru/payments/faq.md",
+        "https://yandex.ru/support/direct/ru/strategies/week-budget.md",
+        "https://yandex.ru/support/direct/ru/payments/payment-methods.md",
+        "https://yandex.ru/support/direct/ru/technologies-and-services/ad-labelingl.md",
+        "https://elama.ru/blog/novosti-kontekstnoy-reklamy-za-sentyabr-2026-goda/",
+        "https://yandex.ru/adv/news/dostup-k-kabinetu-direkta-vosstanavlivaetsya"
+      ],
+      "checked": "2026-10"
+    },
+    "yandex_promopages": {
+      "name": "Яндекс ПромоСтраницы (продвижение статей в Поиске и РСЯ)",
+      "markets": [
+        "RU"
+      ],
+      "available_from_ru": true,
+      "best_for": [
+        "awareness",
+        "sales",
+        "leads"
+      ],
+      "business_models": [
+        "marketplace_seller",
+        "b2c_ecom",
+        "b2b_services"
+      ],
+      "intent": "content",
+      "min_budget_note": "Минимальный бюджет в собранных источниках не указан (в кейсе IDDIS — пакет Start с написанием статей редакцией).",
+      "strengths": "Длинный контент прогревает и фильтрует трафик; стратегия «Внешние переходы» с оплатой за клик по ссылке (GRASS: ~200 тыс. переходов на карточки WB/Ozon по 9,5 ₽); работает в B2B (Синотех: дочитывания 24,8% → 41%); Search Lift.",
+      "weaknesses": "Нужно производство статей; прямая атрибуция продаж на маркетплейсах сложна; в кейсах в основном показатели вовлечения.",
+      "requirements": "Кабинет ПромоСтраниц, статьи (можно силами редакции), пиксели и Метрика.",
+      "source_urls": [
+        "https://yandex.ru/adv/solutions/cases/prodvizhenie-bytovoj-himii-grass-na-wildberries-i-ozon",
+        "https://yandex.ru/adv/solutions/cases/promopages-sinotechmach",
+        "https://yandex.ru/adv/solutions/cases/prodvizhenie-internet-magazina-shin-i-diskov-kolesa-darom-v-promostranicah-yandeksa"
+      ],
+      "checked": "2026-10"
+    },
+    "vk_ads": {
+      "name": "VK Реклама (ВКонтакте, Одноклассники, Дзен, проекты VK, рекламная сеть, MAX)",
+      "markets": [
+        "RU"
+      ],
+      "available_from_ru": true,
+      "best_for": [
+        "leads",
+        "sales",
+        "awareness"
+      ],
+      "business_models": [
+        "local_services",
+        "b2c_high_ticket",
+        "b2c_ecom",
+        "marketplace_seller",
+        "b2c_saas"
+      ],
+      "intent": "social",
+      "min_budget_note": "Минимальный дневной и общий лимит кампании — 300 ₽; для продвижения в Дзене — 10 000 ₽. НДС 22% удерживается из пополнения, дополнительных комиссий нет.",
+      "strengths": "Лид-формы, клипы, таргетинг по ключевым фразам и сообществам конкурентов, ретаргетинг, продвижение сообществ, рассылок и каналов MAX; по данным VK, 97% пользователей Рунета ежемесячно заходят в экосистему VK.",
+      "weaknesses": "Дешёвые лиды из лид-форм могут не конвертироваться в продажи («Волковская 67»: 70 обращений, 0 сделок); оптимизация на промежуточную цель приводит «халявщиков» (GeoRisk); холодная закупка уступает ретаргетингу (доставка еды).",
+      "requirements": "Кабинет VK Рекламы (физлицо/юрлицо/агентство), пиксель VK, маркировка через ОРД VK.",
+      "source_urls": [
+        "https://ads.vk.ru/ru/help/general/start/budget_limits",
+        "https://ads.vk.ru/ru/help/mini_ads/replenishment/money",
+        "https://ads.vk.ru/ru/help/general/network/promotion_in_max",
+        "https://elama.ru/blog/analogi-yandex-direkta/"
+      ],
+      "checked": "2026-10"
+    },
+    "vk_organic": {
+      "name": "ВКонтакте органика (VK Клипы, шопсы, сообщество, рассылки)",
+      "markets": [
+        "RU"
+      ],
+      "available_from_ru": true,
+      "best_for": [
+        "sales",
+        "awareness",
+        "retention"
+      ],
+      "business_models": [
+        "marketplace_seller",
+        "local_services",
+        "b2c_ecom"
+      ],
+      "intent": "social",
+      "min_budget_note": "Без рекламного бюджета; стоимость ролика — от стоимости товара в кадре до 8–10 тыс. ₽ за экспертное видео (кейс Himba).",
+      "strengths": "Шопсы ведут из клипа в карточку Ozon в 2 клика; органический охват (Himba: 2,95 млн просмотров и 986 заказов за 4 месяца; Irenica ideas: 4 млн просмотров и ~500 заказов).",
+      "weaknesses": "Результат зависит от регулярности и хуков; развлекательные ролики с нативной интеграцией дают просмотры без продаж.",
+      "requirements": "Сообщество ВК, интеграция с маркетплейсом (Ozon × ВКонтакте) для шопсов.",
+      "source_urls": [
+        "https://ads.vk.ru/ru/cases/kak-brend-avtokhimii-poluchil-prosmotry-i-zakazy-v-vk-klipakh-kejs-himba",
+        "https://ads.vk.ru/ru/cases/kak-brend-tovarov-poluchil-prosmotry-klipov-i-zakazy-cherez-shopsy-vkontakte-kejs-irenica-ideas"
+      ],
+      "checked": "2026-10"
+    },
+    "dzen": {
+      "name": "Дзен (продвижение статей через VK Рекламу)",
+      "markets": [
+        "RU"
+      ],
+      "available_from_ru": true,
+      "best_for": [
+        "awareness",
+        "sales"
+      ],
+      "business_models": [
+        "b2c_ecom",
+        "b2c_services"
+      ],
+      "intent": "content",
+      "min_budget_note": "Минимальный бюджет кампании продвижения в Дзене — 10 000 ₽ (справка VK Рекламы).",
+      "strengths": "Нативные статьи в ленте Дзена, переход на сайт после прокрутки (scroll-to-site); по оценке eLama, хорошо подходит для электроники, бьюти и сложных услуг. Кейс Divan.ru: дочитывание 16,63 ₽, post-view ДРР 11% в 30-дневном окне.",
+      "weaknesses": "Эффект отложенный: при 7-дневном окне атрибуции ДРР был 29%, при 30-дневном — 11%; нужны статьи.",
+      "requirements": "Канал в Дзене + кабинет VK Рекламы.",
+      "source_urls": [
+        "https://ads.vk.ru/ru/help/general/start/budget_limits",
+        "https://adindex.ru/case/2024/03/26/321341.phtml",
+        "https://elama.ru/blog/gde-esche-reklamirovatsya-krome-telegram-v-2026-godu/"
+      ],
+      "checked": "2026-10"
+    },
+    "mytarget": {
+      "name": "myTarget (историческая рекламная платформа VK)",
+      "markets": [
+        "RU"
+      ],
+      "available_from_ru": "partial",
+      "best_for": [
+        "leads",
+        "sales"
+      ],
+      "business_models": [
+        "b2c_ecom",
+        "local_services"
+      ],
+      "intent": "social",
+      "min_budget_note": "Не подтверждено в этой сессии.",
+      "strengths": "Не подтверждено в этой сессии; VK позиционирует VK Рекламу как «единую платформу» продвижения на проектах VK и в рекламной сети.",
+      "weaknesses": "Текущий статус (самостоятельный кабинет или полная миграция в VK Рекламу) первоисточником не проверен.",
+      "requirements": "Проверить на ads.vk.ru / target.my.com перед планированием.",
+      "source_urls": [
+        "https://ads.vk.ru/en/cases/prodvigaem-sajt-i-lid-formy-kejs-haval"
+      ],
+      "checked": "2026-10"
+    },
+    "telegram_ads": {
+      "name": "Telegram Ads (официальная реклама; также посты в каналах через Яндекс Директ)",
+      "markets": [
+        "RU",
+        "BY",
+        "KZ",
+        "CIS"
+      ],
+      "available_from_ru": "partial",
+      "best_for": [
+        "awareness",
+        "leads",
+        "sales"
+      ],
+      "business_models": [
+        "b2c_services",
+        "b2c_ecom",
+        "local_services",
+        "b2b_services",
+        "creative_services"
+      ],
+      "intent": "messenger",
+      "min_budget_note": "Напрямую — 2 млн € (1 млн € — депозит). Через реселлеров: у большинства 500 €, через МТС Маркетолог Pro — 250 €, через «МегаФон» — 100 € (eLama, 14.09.2026); плюс комиссия от 20% (образование 25%, крипто 30%) и НДС 22%. CPM в 2026 — в среднем 0,5–5 €. Через Директ — по общим минимумам Директа (300 ₽).",
+      "strengths": "Большая аудитория (Mediascope, дек. 2025: 74,3 млн в день, 93,6 млн в месяц); таргет по каналам и интересам, по базам телефонов и Big Data МТС (через Маркетолог Pro); трекинг пригласительными ссылками; после ограничений средняя цена поста упала на 17%, клика — на 10%. Кейс визового центра: CPJ 1,05 € → 0,51 €, ROAS 563%.",
+      "weaknesses": "Правовой риск: по позиции ФАС реклама на ресурсе с ограниченным доступом запрещена (ч. 10.7 ст. 5 закона «О рекламе»); переходный период без штрафов — только до 31.12.2026, правила на 2027 не определены. Замедление со стороны РКН с февраля 2026; рекламу не видят Premium-пользователи; комиссии и валютный курс.",
+      "requirements": "Юрлицо или ИП через реселлера (eLama, МТС Маркетолог Pro, МегаФон, Click.ru и др.); маркировка ERID (у реселлеров автоматическая); в Директе «Реклама в мессенджерах» доступна рекламодателям из RU, BY, UZ, KZ, TR.",
+      "source_urls": [
+        "https://elama.ru/blog/skolko-stoit-reklama-v-telegram/",
+        "https://elama.ru/blog/novye-usloviya-zapuska-reklamy-v-telegram-ads/",
+        "https://ppc.world/news/fas-mery-otvetstvennosti-za-reklamu-v-telegram-i-youtube-ne-budut-primenyatsya-do-konca-2026-goda/",
+        "https://expert.ru/news/fas-ne-budet-nakazyvat-za-reklamu-v-telegram-i-youtube-do-kontsa-2026-goda",
+        "https://elama.ru/blog/blokirovka-telegram-v-rossii/",
+        "https://yandex.ru/support/direct/ru/efficiency/messengers-ads.md"
+      ],
+      "checked": "2026-10"
+    },
+    "telegram_seeding": {
+      "name": "Посевы в Telegram-каналах (напрямую, через биржи Telega.in и WOWBlogger, через каталог Директа)",
+      "markets": [
+        "RU",
+        "CIS"
+      ],
+      "available_from_ru": "partial",
+      "best_for": [
+        "awareness",
+        "leads",
+        "sales"
+      ],
+      "business_models": [
+        "b2c_ecom",
+        "marketplace_seller",
+        "b2b_saas",
+        "b2c_high_ticket"
+      ],
+      "intent": "messenger",
+      "min_budget_note": "Цены за пост: WOWBlogger — от 259 ₽ до 815 тыс. ₽, Telega.in — от 70 ₽ до 2,34 млн ₽; посев в 30–50 каналах — 50–200 тыс. ₽ в месяц (eLama, 14.09.2026).",
+      "strengths": "Доступ к Premium-аудитории; быстрые гипотезы (BotFAQtor: после смены оффера бюджет 100 тыс. → 15 тыс. ₽ и в 4 раза больше качественных лидов); авторские каналы дают более дешёвых лидов; маркетплейсам — через промежуточный лендинг (DreamWhite: 91 тыс. переходов на 1,4 млн ₽).",
+      "weaknesses": "Тот же правовой риск, что и у Telegram Ads (до 31.12.2026 без санкций); накрутки; ёмкость узких ниш мала (Verga: только 2 из 5 каналов смогли оформить маркировку); повторный пост теряет эффективность; нестабильная цена подписчика (ASAP: 200–500 ₽).",
+      "requirements": "Маркировка ERID на каждое размещение (на биржах — автоматически); договоры с ИП/юрлицами-владельцами каналов; проверка каналов (TGStat, Telemetr).",
+      "source_urls": [
+        "https://elama.ru/blog/skolko-stoit-reklama-v-telegram/",
+        "https://elama.ru/blog/beri-i-povtoryay-stoimost-lida-v-3-raza-nizhe-kpi-i-drugie-uspeshnye-keysy-posevov-v-telegram/",
+        "https://workspace.ru/cases/posevy-v-telegram-329-novyh-podpischikov-po-99-8-rublya-za-3-nedeli/"
+      ],
+      "checked": "2026-10"
+    },
+    "max_messenger": {
+      "name": "MAX (национальный мессенджер VK): реклама через VK Рекламу, Яндекс Директ и посевы",
+      "markets": [
+        "RU"
+      ],
+      "available_from_ru": true,
+      "best_for": [
+        "leads",
+        "awareness"
+      ],
+      "business_models": [
+        "b2c_high_ticket",
+        "local_services",
+        "b2c_ecom"
+      ],
+      "intent": "messenger",
+      "min_budget_note": "Через VK Рекламу — общие минимумы (лимит от 300 ₽), показы в каналах от 1 000 подписчиков; через Директ — общие минимумы Директа; показы в MAX — только в России.",
+      "strengths": "Низкая конкуренция и дешёвый контакт в 2026 году (кейс ЖК «Яблоневый»: CPL ~2 043 ₽ против 6 705 ₽ в поиске, доля квалифицированных лидов ~60%); предустановка на устройства с 01.09.2025; аудитория по разным оценкам 70–110 млн.",
+      "weaknesses": "Молодой инвентарь, мало каналов в регионах (частые повторные показы); собственного рекламного кабинета MAX на апрель–июнь 2026 не было [сниппет]; данные об аудитории расходятся.",
+      "requirements": "Кабинет VK Рекламы или Директа; маркировка — в системах автоматически.",
+      "source_urls": [
+        "https://ads.vk.ru/ru/help/general/network/promotion_in_max",
+        "https://yandex.ru/adv/products/telegram-reklama",
+        "https://yandex.ru/support/direct/ru/efficiency/messengers-ads.md",
+        "https://en.wikipedia.org/wiki/Max_(app)",
+        "https://elama.ru/blog/sravnili-dva-sposoba-zapuska-reklamy-v-max-i-proverili-mozhet-li-novyy-messendzher-stat-alternativoy-kontekstu-v-nizkiy-sezon-keys-prodvizheniya-novostroyki/"
+      ],
+      "checked": "2026-10"
+    },
+    "avito": {
+      "name": "Авито (продвижение объявлений + Авито Реклама)",
+      "markets": [
+        "RU"
+      ],
+      "available_from_ru": true,
+      "best_for": [
+        "leads",
+        "sales"
+      ],
+      "business_models": [
+        "local_services",
+        "b2b_services",
+        "b2c_ecom"
+      ],
+      "intent": "marketplace",
+      "min_budget_note": "Авито Реклама — для юрлиц и ИП от 5 000 ₽ (eLama, 22.09.2026); продвижение объявлений работает и на микробюджетах (салон красоты: 3 708 ₽ в месяц → 78 обращений по 47,5 ₽).",
+      "strengths": "Аудитория с готовым намерением купить (по данным площадки — 72+ млн пользователей); Авито Реклама с оплатой CPC/CPM и click-out на свой сайт или квиз; сегментация объявлений по подуслугам кратно снижает CPL (рулевые рейки: 200 → 87 ₽, заявки ×3,5).",
+      "weaknesses": "Высокая конкуренция и шаблонные объявления; нецелевые звонки без фильтрации в креативе; ручной труд на уникализацию.",
+      "requirements": "Аккаунт Авито (лучше — бизнес), автозагрузка для массовых объявлений; для Авито Рекламы — юрлицо или ИП.",
+      "source_urls": [
+        "https://elama.ru/blog/analogi-yandex-direkta/",
+        "https://www.sostav.ru/blogs/284579/69410",
+        "https://workspace.ru/cases/prodvizhenie-salona-krasoty-na-avito-snizhenie-stoimosti-obrascheniya-s-255-do-47-rubley/",
+        "https://www.sostav.ru/blogs/287568/95971"
+      ],
+      "checked": "2026-10"
+    },
+    "wildberries": {
+      "name": "Wildberries (внутренний аукцион, карточки и обложки; click-out реклама)",
+      "markets": [
+        "RU",
+        "BY",
+        "KZ",
+        "CIS"
+      ],
+      "available_from_ru": true,
+      "best_for": [
+        "sales"
+      ],
+      "business_models": [
+        "marketplace_seller"
+      ],
+      "intent": "marketplace",
+      "min_budget_note": "Внутренняя реклама — аукцион CPM/CPC (минимальные ставки не проверены) [сниппет]; click-out реклама на WB через eLama — от 100 000 ₽ без НДС (02.10.2026).",
+      "strengths": "Обложка и инфографика — бесплатный рычаг CTR (тест: CTR 5,5% → 7,2%, заказы +33% при той же рекламе); внешний трафик на карточки дают Директ, ПромоСтраницы и посевы.",
+      "weaknesses": "Атрибуция внешнего трафика сложна (нужны промежуточные лендинги); аукцион меняется в реальном времени; комиссии и возвраты убивают экономику дорогих товаров (D2C-комбинезоны ушли с маркетплейсов).",
+      "requirements": "Кабинет продавца WB; официальные справки по рекламе в этой сессии не получены.",
+      "source_urls": [
+        "https://elama.ru/blog/novosti-kontekstnoy-reklamy-za-sentyabr-2026-goda/",
+        "https://uniseller.io/blog/infografika-wildberries-rost-prodazh-test",
+        "https://uniseller.io/blog/tema/reklama/stranica/2/"
+      ],
+      "checked": "2026-10"
+    },
+    "ozon": {
+      "name": "Ozon (Продвижение в поиске, Трафареты, Вывод в топ, баннеры, промобаннеры)",
+      "markets": [
+        "RU",
+        "BY",
+        "KZ",
+        "CIS"
+      ],
+      "available_from_ru": true,
+      "best_for": [
+        "sales"
+      ],
+      "business_models": [
+        "marketplace_seller"
+      ],
+      "intent": "marketplace",
+      "min_budget_note": "Минимальные бюджеты и ставки не проверены (документация Ozon недоступна из сессии); Трафареты с июня 2024 — только оплата за клик.",
+      "strengths": "Tom Tailor: продажи +40% за 8 недель, ДРР почти в 4,5 раза ниже; «Вывод в топ» — +30% к CTR и CR; ранний старт до сезона; интеграция Ozon × ВКонтакте (шопсы в клипах).",
+      "weaknesses": "Растущая конкуренция ставок в сезон; правила форматов часто меняются.",
+      "requirements": "Кабинет продавца Ozon.",
+      "source_urls": [
+        "https://easycomm.ru/blog/tpost/h746e4n3i1-keis-tom-tailor-easy-commerce-uvelichili",
+        "https://yandex.ru/adv/solutions/cases/direct-pomog-sportivnomu-magazinu-snizit-drr"
+      ],
+      "checked": "2026-10"
+    },
+    "influencers": {
+      "name": "Блогеры и инфлюенс-маркетинг (VK, Telegram, MAX, Дзен, Rutube; Instagram — запрещён)",
+      "markets": [
+        "RU",
+        "CIS"
+      ],
+      "available_from_ru": "partial",
+      "best_for": [
+        "awareness",
+        "sales",
+        "leads"
+      ],
+      "business_models": [
+        "b2c_ecom",
+        "b2c_high_ticket",
+        "marketplace_seller"
+      ],
+      "intent": "content",
+      "min_budget_note": "Зависит от блогера; биржи (WOWBlogger — 55 000+ блогеров на 7 площадках) работают по постоплате.",
+      "strengths": "Доверие и охват; застройщик: ROMI 1730%, 3 проданные квартиры, CPL до 416 ₽ после повторных выходов; рынок рекламы у блогеров в 2025 году — около 50–60 млрд ₽.",
+      "weaknesses": "С 01.09.2025 реклама в Instagram и Facebook запрещена (ч. 10.7 ст. 5); Telegram и YouTube — переходный период до 31.12.2026; нужна маркировка ERID; первые выходы часто не окупаются.",
+      "requirements": "Договор, ERID, вести на квиз или сайт с UTM.",
+      "source_urls": [
+        "https://ruward.ru/cases/7603/",
+        "https://ppc.world/news/obem-reklamy-v-telegram-v-2026-godu-snizitsya-na-fone-ogranicheniy-rkn-prognozy-ekspertov/",
+        "https://www.consultant.ru/document/cons_doc_LAW_58968/f67f81c57fdcdacc2643d19d59369f7e185e1156/",
+        "https://elama.ru/blog/analogi-yandex-direkta/"
+      ],
+      "checked": "2026-10"
+    },
+    "email": {
+      "name": "Email-маркетинг (Unisender, Mindbox, Sendsay и др.)",
+      "markets": [
+        "RU",
+        "CIS",
+        "GLOBAL"
+      ],
+      "available_from_ru": true,
+      "best_for": [
+        "retention",
+        "sales"
+      ],
+      "business_models": [
+        "b2c_ecom",
+        "b2c_services",
+        "b2b_services"
+      ],
+      "intent": "content",
+      "min_budget_note": "Стоимость сервиса рассылок; рекламного аукциона нет.",
+      "strengths": "Собственная база не зависит от блокировок (eLama советует собирать базу на случай ограничений Telegram); City Star: доля email в обороте выросла до 9,7% за год.",
+      "weaknesses": "Рекламные письма требуют предварительного согласия получателя (ч. 1 ст. 18 закона «О рекламе»); нужна техническая настройка домена (DMARC и др.).",
+      "requirements": "Согласие подписчиков (double opt-in), аутентификация домена.",
+      "source_urls": [
+        "https://www.unisender.com/ru/blog/keysy/10-vpechatlyayushchih-keysov-po-email-rassylkam",
+        "https://www.consultant.ru/document/cons_doc_LAW_58968/f892dec1383709792452f18d36e7043306e2be0a/",
+        "https://elama.ru/blog/blokirovka-telegram-v-rossii/"
+      ],
+      "checked": "2026-10"
+    },
+    "seo": {
+      "name": "SEO (Яндекс и Google органика)",
+      "markets": [
+        "RU",
+        "CIS"
+      ],
+      "available_from_ru": true,
+      "best_for": [
+        "sales",
+        "leads"
+      ],
+      "business_models": [
+        "b2c_ecom",
+        "local_services",
+        "b2b_services"
+      ],
+      "intent": "search",
+      "min_budget_note": "Бюджет на работы и контент; оплаты за клик нет.",
+      "strengths": "Магазин комплектующих для 3D-принтеров: трафик ×2, заказы ×4 за 7 месяцев после технического аудита и доработки коммерческих блоков.",
+      "weaknesses": "Долго; зависит от технического состояния сайта; иностранные трекеры (GTM) агентства удаляют, ссылаясь на требования к ПДн с 01.07.2025 (интерпретация агентства).",
+      "requirements": "Яндекс Вебмастер, Метрика, корректные sitemap и robots.",
+      "source_urls": [
+        "https://www.sostav.ru/blogs/284220/77838"
+      ],
+      "checked": "2026-10"
+    },
+    "cold_telegram": {
+      "name": "Холодный аутрич в Telegram (ручной или с ИИ-агентом)",
+      "markets": [
+        "RU",
+        "CIS"
+      ],
+      "available_from_ru": "partial",
+      "best_for": [
+        "leads"
+      ],
+      "business_models": [
+        "b2b_services",
+        "creative_services",
+        "b2b_saas"
+      ],
+      "intent": "messenger",
+      "min_budget_note": "Затраты — время SDR или сервис; Upsale: лид за 1 052 ₽ при конверсии базы 3,6%.",
+      "strengths": "Точная персонализация по ролям даёт высокий reply rate (uForce: 28,8% по данным агентства, 36 встреч за 4 месяца с ЛПР крупных компаний).",
+      "weaknesses": "Рекламные сообщения без согласия нарушают ч. 1 ст. 18 закона «О рекламе»; жалобы на спам ведут к ограничениям и блокировке аккаунта; Telegram в РФ замедлен; с октября 2025 ограничена передача SMS-кодов для регистрации новых аккаунтов.",
+      "requirements": "Валидированная база, «прогретые» аккаунты, паузы между сообщениями, первое сообщение — вопрос, а не реклама.",
+      "source_urls": [
+        "https://ruward.ru/cases/10183/",
+        "https://workspace.ru/cases/upsale-reanimator-57-lidov-iz-holodnoy-bazy-telegram-za-20-dney/",
+        "https://www.consultant.ru/document/cons_doc_LAW_58968/f892dec1383709792452f18d36e7043306e2be0a/",
+        "https://elama.ru/blog/blokirovka-telegram-v-rossii/"
+      ],
+      "checked": "2026-10"
+    },
+    "meta": {
+      "name": "Meta Ads (Facebook, Instagram)",
+      "markets": [
+        "GLOBAL",
+        "KZ"
+      ],
+      "available_from_ru": false,
+      "best_for": [
+        "sales",
+        "leads",
+        "awareness"
+      ],
+      "business_models": [
+        "b2c_ecom",
+        "creative_services"
+      ],
+      "intent": "social",
+      "min_budget_note": "Для рекламодателей из РФ недоступно с марта 2022.",
+      "strengths": "Для экспорта (аудитории вне РФ) — крупнейший социальный инвентарь.",
+      "weaknesses": "С марта 2022 Meta не показывает рекламу на Россию и не позволяет рекламодателям из России запускать её нигде в мире [сниппет]; Meta признана экстремистской (21.03.2022); с 01.09.2025 реклама на её ресурсах запрещена ч. 10.7 ст. 5 закона «О рекламе», переходного периода нет; ограничения для KZ и BY не проверены.",
+      "requirements": "Только иностранное юрлицо и иностранные платежи, аудитория вне РФ; риск по российскому законодательству для резидентов РФ.",
+      "source_urls": [
+        "https://businessinsider.nl/facebook-pulls-all-ads-in-russia-and-blocks-all-russian-advertisers-globally/",
+        "https://en.wikipedia.org/wiki/Internet_censorship_in_Russia",
+        "https://www.consultant.ru/document/cons_doc_LAW_58968/f67f81c57fdcdacc2643d19d59369f7e185e1156/",
+        "https://expert.ru/news/fas-ne-budet-nakazyvat-za-reklamu-v-telegram-i-youtube-do-kontsa-2026-goda"
+      ],
+      "checked": "2026-10"
+    },
+    "google_search": {
+      "name": "Google Ads (поиск, КМС)",
+      "markets": [
+        "GLOBAL",
+        "KZ",
+        "BY"
+      ],
+      "available_from_ru": false,
+      "best_for": [
+        "leads",
+        "sales"
+      ],
+      "business_models": [
+        "b2c_ecom",
+        "b2b_services",
+        "creative_services"
+      ],
+      "intent": "search",
+      "min_budget_note": "Для РФ недоступно с 03.2022; в Казахстане CPC в III кв. 2024 — 0,07–0,36 $ в зависимости от региона [сниппет, Kapital.kz].",
+      "strengths": "Для экспорта — поисковый спрос вне РФ.",
+      "weaknesses": "Реклама в России приостановлена 3–4.03.2022 (поиск, YouTube, медийная сеть); по справке AdSense — с 10.03.2022 пауза для рекламодателей из РФ во всех сетях Google [сниппет]; платежи из РФ недоступны.",
+      "requirements": "Иностранное юрлицо и карта; таргетинг только вне РФ.",
+      "source_urls": [
+        "https://edition.cnn.com/2022/03/04/tech/google-russia-advertising-halt/index.html",
+        "https://searchengineland.com/platforms-that-suspended-ads-in-russia-382211",
+        "https://kapital.kz/business/131970/skol-ko-stoit-klik-v-google-ads-v-kazakhstane.html"
+      ],
+      "checked": "2026-10"
+    },
+    "youtube": {
+      "name": "YouTube Ads",
+      "markets": [
+        "GLOBAL"
+      ],
+      "available_from_ru": false,
+      "best_for": [
+        "awareness"
+      ],
+      "business_models": [
+        "b2c_ecom",
+        "creative_services"
+      ],
+      "intent": "content",
+      "min_budget_note": "Для РФ недоступно (входит в паузу Google Ads с 03.2022).",
+      "strengths": "Для экспорта — видеоинвентарь вне РФ.",
+      "weaknesses": "К 2024 году доступ к YouTube в России сильно ограничен, для нормальной работы нужен VPN; ФАС относит YouTube к ресурсам с ограниченным доступом — реклама и интеграции у блогеров запрещены, без санкций до 31.12.2026; Google не продаёт рекламу на РФ.",
+      "requirements": "Вне РФ — аккаунт Google Ads иностранного юрлица; для РФ — альтернатива VK Видео/Rutube.",
+      "source_urls": [
+        "https://en.wikipedia.org/wiki/Internet_censorship_in_Russia",
+        "https://ppc.world/news/fas-mery-otvetstvennosti-za-reklamu-v-telegram-i-youtube-ne-budut-primenyatsya-do-konca-2026-goda/"
+      ],
+      "checked": "2026-10"
+    },
+    "tiktok": {
+      "name": "TikTok Ads",
+      "markets": [
+        "GLOBAL",
+        "KZ"
+      ],
+      "available_from_ru": false,
+      "best_for": [
+        "awareness",
+        "sales"
+      ],
+      "business_models": [
+        "b2c_ecom",
+        "creative_services"
+      ],
+      "intent": "social",
+      "min_budget_note": "Для РФ — не подтверждено (кабинет не проверялся); [вывод] недоступно.",
+      "strengths": "Для экспорта — короткие видео вне РФ.",
+      "weaknesses": "С марта 2022 TikTok ограничил публикации и прямые эфиры для пользователей в России; доступность TikTok Ads Manager для рекламодателей из РФ в этой сессии не проверена.",
+      "requirements": "Иностранное юрлицо; аудитория вне РФ.",
+      "source_urls": [
+        "https://en.wikipedia.org/wiki/TikTok"
+      ],
+      "checked": "2026-10"
+    },
+    "linkedin": {
+      "name": "LinkedIn Ads",
+      "markets": [
+        "GLOBAL"
+      ],
+      "available_from_ru": false,
+      "best_for": [
+        "leads"
+      ],
+      "business_models": [
+        "b2b_services",
+        "b2b_saas"
+      ],
+      "intent": "social",
+      "min_budget_note": "Для РФ недоступно.",
+      "strengths": "Для B2B-экспорта — таргетинг по должностям.",
+      "weaknesses": "LinkedIn заблокирован в России с 10.11.2016 (локализация ПДн), в Казахстане запрещён в 2021 году.",
+      "requirements": "Иностранное юрлицо и аудитория вне РФ/KZ.",
+      "source_urls": [
+        "https://en.wikipedia.org/wiki/LinkedIn"
+      ],
+      "checked": "2026-10"
+    },
+    "pinterest": {
+      "name": "Pinterest Ads",
+      "markets": [
+        "GLOBAL"
+      ],
+      "available_from_ru": false,
+      "best_for": [
+        "awareness",
+        "sales"
+      ],
+      "business_models": [
+        "b2c_ecom",
+        "creative_services"
+      ],
+      "intent": "content",
+      "min_budget_note": "Не подтверждено (страница о доступности рекламы не загрузилась).",
+      "strengths": "Для экспорта — визуальный поиск (декор, мода).",
+      "weaknesses": "[вывод, не подтверждено] Россия, вероятно, не входит в страны для рекламы и платежей; проверить по официальному списку стран.",
+      "requirements": "Иностранное юрлицо; проверить список стран.",
+      "source_urls": [
+        "https://help.pinterest.com/en/business/availability/ads-availability"
+      ],
+      "checked": "2026-10"
+    },
+    "reddit": {
+      "name": "Reddit Ads",
+      "markets": [
+        "GLOBAL"
+      ],
+      "available_from_ru": false,
+      "best_for": [
+        "awareness",
+        "leads"
+      ],
+      "business_models": [
+        "b2b_saas",
+        "creative_services"
+      ],
+      "intent": "content",
+      "min_budget_note": "Не подтверждено.",
+      "strengths": "Для экспорта — нишевые сообщества.",
+      "weaknesses": "[вывод, не подтверждено] Рекламный кабинет для РФ, вероятно, недоступен (санкционные и платёжные ограничения); сам сайт Reddit блокировался в РФ в 2015 году и затем был разблокирован.",
+      "requirements": "Иностранное юрлицо; проверить условия Reddit Ads.",
+      "source_urls": [
+        "https://en.wikipedia.org/wiki/Reddit"
+      ],
+      "checked": "2026-10"
+    },
+    "cold_email": {
+      "name": "Холодные e-mail-рассылки",
+      "markets": [
+        "RU",
+        "CIS",
+        "GLOBAL"
+      ],
+      "available_from_ru": "partial",
+      "best_for": [
+        "leads"
+      ],
+      "business_models": [
+        "b2b_services",
+        "b2b_saas",
+        "creative_services"
+      ],
+      "intent": "messenger",
+      "min_budget_note": "Стоимость инструментов и доменов.",
+      "strengths": "Масштабируемый B2B-аутрич, особенно на экспорт.",
+      "weaknesses": "В РФ реклама по сетям электросвязи без предварительного согласия адресата запрещена (ч. 1 ст. 18 закона «О рекламе»); для аудиторий ЕС/США действуют свои законы (не исследовалось).",
+      "requirements": "Персонализация, нерекламный первый контакт, корректная настройка домена.",
+      "source_urls": [
+        "https://www.consultant.ru/document/cons_doc_LAW_58968/f892dec1383709792452f18d36e7043306e2be0a/"
+      ],
+      "checked": "2026-10"
+    }
+  }
+}

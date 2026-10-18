@@ -117,6 +117,8 @@ def score_channels(req, catalog, funnel_stats=None):
             if min_b and budget and budget < min_b:
                 score -= 3
                 why.append(f"бюджет ниже минимального порога канала (~{min_b:,.0f})".replace(",", " "))
+            if info.get("legal_flag"):
+                why.append(f"⚖ {info['legal_flag']}")
             if task == "leads" and info.get("intent") == "search":
                 score += 1
                 why.append("поисковый спрос — люди уже ищут решение")
