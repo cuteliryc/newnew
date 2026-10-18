@@ -1,0 +1,12 @@
+{
+  "currency": "RUB",
+  "hourly_rate": 1500,
+  "gross_margin": 0.7,
+  "budget": {
+    "outcome": "revenue",
+    "outcome_is_revenue": true
+  },
+  "creatives": {
+    "result": "leads"
+  }
+}

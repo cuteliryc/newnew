@@ -316,3 +316,105 @@ def build_plan(req, catalog, cases, funnel_stats=None, creative_stats=None, engi
         "calendar": calendar(req, channels, bool(funnel_stats and funnel_stats.get("status") == "ok")),
         "hypotheses": hypotheses_from_cases(matched, econ, req),
     }
+
+
+def render_plan(p, cfg):
+    cur = p["request"].get("currency", cfg["currency"])
+
+    def m(x):
+        return "—" if x is None else f"{x:,.0f} {cur}".replace(",", " ")
+
+    e = p["unit_economics"]
+    r = p["request"]
+    L = [f"# План 360: {r.get('task', 'задача')} — {r.get('audience', '')}", "",
+         "## 1. Экономика: сколько можно платить",
+         f"- Прибыль с клиента: {m(e['profit_per_customer'])} (чек {m(e['avg_check'])} × маржа {e['margin']:.0%} × покупок {e['repeat_purchases']})",
+         f"- Предельный CAC (в ноль): {m(e['max_cac_breakeven'])}; целевой CAC: {m(e['target_cac'])}",
+         f"- Конверсия заявка → сделка: {e['lead_to_deal']:.0%} ({e['lead_to_deal_source']})",
+         f"- **Целевая цена заявки: {m(e['target_cpl'])}**, в ноль — {m(e['max_cpl_breakeven'])}",
+         f"- _{e['note']}_", ""]
+
+    o = p.get("offer")
+    L.append("## 2. Оффер и позиционирование")
+    if o:
+        L.append(f"Выполнено {o['passed']} из {o['total']} пунктов чек-листа. Исправить в первую очередь:")
+        L += [f"- {x['check']} → {x['how']}" for x in o["fix_first"]]
+        if o["gap_angles"]:
+            L.append(f"- Свободные углы (конкуренты держат, вы — нет): {', '.join(o['gap_angles'])}")
+        if o["crowded_angles"]:
+            L.append(f"- Переполненные углы (у всех одинаково): {', '.join(o['crowded_angles'])}")
+        L += [f"- Тест: {t}" for t in o["tests"]] + [f"_{o['note']}_"]
+    else:
+        L.append("Добавьте в запрос блок \"offer\" (текст и чек-лист), чтобы проверить предложение.")
+    L.append("")
+
+    L += ["## 3. Каналы", ""]
+    roles = {"core": "ядро", "test": "тест", "skip": "не сейчас"}
+    for c in p["channels"]:
+        L.append(f"- **{c['channel']}** — {roles.get(c.get('role'), c.get('role'))} (балл {c['score']:.0f}): "
+                 + ("; ".join(c["why"]) or "нет данных для оценки"))
+    b = p["budget"]
+    L += ["", "## 4. Бюджет на месяц"]
+    if "plan" in b:
+        for ch, row in b["plan"].items():
+            if row.get("hours_week"):
+                L.append(f"- {ch}: ~{row['hours_week']} ч в неделю ({row['role']}; {row['note']})")
+            else:
+                L.append(f"- {ch}: {m(row['budget'])} ({row['role']})")
+        L.append(f"- разведка новых идей: {m(b['exploration'])}")
+        for n in b["notes"]:
+            L.append(f"- ⚠ {n}")
+        L.append(f"\n_{b['rule']}_")
+    else:
+        L.append(b.get("note", ""))
+
+    L += ["", "## 5. Креатив и тексты"] + [f"- {t}" for t in p["default_tests"]]
+    if p["proven_angles"]:
+        L.append("- По вашим данным сильнее работают: " + ", ".join(
+            f"{a['tag']}=«{a['value']}» ({a['lift_vs_rest'] * 100:+.0f}%)" for a in p["proven_angles"]))
+    L.append("- Баннеры: `python3 -m moneyball banners briefs/<бриф>.json --register`")
+
+    c = p.get("content")
+    L += ["", "## 6. Контент и соцсети"]
+    if c:
+        for tag, items in c["tags"].items():
+            L.append(f"- по {tag}: масштабировать «{items[0]['value']}» (медиана ×{items[0]['median_x']:.1f}), "
+                     f"реже — «{items[-1]['value']}» (×{items[-1]['median_x']:.1f})")
+        for x in c["outliers"][:3]:
+            L.append(f"- залетело: «{x.get('topic')}» ({x.get('format')}) ×{x['x_median']:.1f} — сделать продолжение в другом формате")
+    else:
+        L.append("Данных по публикациям нет (data/content.csv): первые 4 недели — 3 разные темы × 2 формата, "
+                 "критерий «залетело» = ×3 от медианы охвата.")
+
+    rt = p.get("retention")
+    L += ["", "## 7. Клиенты и повторные продажи"]
+    if rt:
+        L.append(f"Повторно покупают {rt['repeat_rate']:.0%}, в среднем {rt['avg_orders']:.1f} заказа. Что делать по сегментам:")
+        L += [f"- {seg}: {s['customers']} клиентов" for seg, s in rt["segments"].items()]
+    else:
+        L.append("Данных по заказам нет (data/orders.csv). Минимум: после каждой сделки — отзыв + цифра результата + "
+                 "предложение следующего шага через 30 дней.")
+
+    L += ["", "## 8. СМИ и PR"]
+    if p["pr_ideas"]:
+        for i in p["pr_ideas"]:
+            L.append(f"- **{i['pattern']}**: {i['idea']}" + (f" _(пример: {i['example']})_" if i.get("example") else ""))
+        L.append("Оценить идею: `python3 -m moneyball pr score ideas/<идея>.json`")
+    else:
+        L.append("Добавьте в запрос блок \"pr\" (бренд, что умеете, какие данные есть) — система предложит идеи по шаблонам.")
+
+    L += ["", "## 9. Похожие кейсы и что из них проверить", ""]
+    if not p["cases"]:
+        L.append("Подходящих кейсов в базе нет (knowledge/cases).")
+    for c in p["cases"]:
+        L += [f"**{c.get('title')}** — {c.get('brand')}, {c.get('market')} [{c.get('evidence')}]",
+              f"- Сделали: {c.get('what_they_did')}",
+              f"- Почему сработало: {c.get('mechanism')}",
+              f"- Тест для вас: {c.get('test_to_run')}",
+              f"- Источник: {c.get('source_url')}", ""]
+
+    L += ["## 10. Первые 4 недели", ""]
+    for w in p["calendar"]:
+        L.append(f"**Неделя {w['week']} — {w['focus']}**")
+        L += [f"- {x}" for x in w["do"]] + [""]
+    return "\n".join(L)

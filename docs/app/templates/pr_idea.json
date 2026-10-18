@@ -1,0 +1,38 @@
+{
+  "title": "AI-фотосессия против студийной: слепой тест на 1000 человек",
+  "description": "Одна капсула бренда снимается двумя способами: студия и AI-пайплайн. Подписчики и байеры выбирают вслепую, публикуем результат и бюджеты обеих съёмок.",
+
+  "answers": {
+    "A1_surprise": 1,
+    "A2_exclusive": 1,
+    "A3_visual": 1,
+    "A4_conflict": 1,
+    "A5_timeliness": 0.5,
+    "A6_people": 0.5,
+    "B1_emotion": 0.5,
+    "B2_value": 1,
+    "B3_participation": 1,
+    "C1_product_hero": 1,
+    "C2_right_to_play": 1,
+    "C3_path_measure": 0.5,
+    "C4_capacity": 0.5,
+    "D1_budget": 1,
+    "D2_control": 0.5,
+    "D3_second_wave": 0.5
+  },
+  "stop_flags": {
+    "fabrication": false,
+    "tragedy": false,
+    "humiliation": false,
+    "polarizing": false,
+    "safety": false,
+    "unlimited": false,
+    "irreversible": false,
+    "customer_data": false,
+    "platform_rules": false,
+    "ru_compliance": false,
+    "headline_number": false
+  },
+
+  "_comment": "answers: 0 — нет, 0.5 — частично, 1 — да. Вопросы к критериям — moneyball/pr.py (BLOCKS). Порог: ≥70 — делать, 50–69 — доработать, <50 — нет; любой стоп-флаг — стоп."
+}

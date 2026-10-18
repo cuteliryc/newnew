@@ -1,0 +1,4 @@
+id,created,source_agent,layer,hypothesis,variable,source,evidence,expected_lift,value_at_stake,cost_hours,status
+H1,2026-10-01,manual,offer,Гарантия «не понравится — вернём деньги» поднимет конверсию в сделку,offer,конкуренты держат угол guarantee,medium,0.2,120000,2,new
+H2,2026-10-01,manual,creative,Хук «до/после» в видео для vk_ads,hook,creative winners,medium,0.3,60000,6,new
+H3,2026-10-02,manual,copy,Слово «бесплатно» в первой строке,headline,интуиция,none,0.05,60000,1,new

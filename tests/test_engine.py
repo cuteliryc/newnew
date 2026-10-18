@@ -152,3 +152,21 @@ def test_time_channels_get_hours_not_money():
     channels = planner.score_channels(req, {"telegram_ads": {"best_for": ["leads"], "markets": ["RU"]}}, funnel_stats)
     plan = planner.split_budget(req, channels, econ)["plan"]
     assert plan.get("cold_telegram", {}).get("budget", 0) == 0 or "cold_telegram" not in plan
+
+
+def test_web_bridge_roundtrip():
+    from moneyball import web
+    web.setup(ROOT)
+    files = {name: (DEMO / name).read_text(encoding="utf-8") for name in web.DATA_FILES if (DEMO / name).exists()}
+    out = json.loads(web.run_weekly(json.dumps(files)))
+    assert "Воронка в деньгах" in out["report"]
+    req = (DEMO / "request.json").read_text(encoding="utf-8")
+    plan = json.loads(web.run_plan(req))
+    assert "План 360" in plan["markdown"]
+    brief = json.loads((DEMO / "brief.json").read_text(encoding="utf-8"))
+    brief["n"] = 2
+    banners = json.loads(web.run_banners(json.dumps(brief)))
+    assert len(banners["banners"]) == 4 and banners["manifest"].startswith("creative_id")
+    idea = (ROOT / "templates" / "pr_idea.json").read_text(encoding="utf-8")
+    assert json.loads(web.run_pr_score(idea))["result"]["score"] > 0
+    assert "Идеи для СМИ" in web.run_pr_ideas(json.dumps(json.loads(req)["pr"]))
