@@ -118,3 +118,33 @@ def test_agent_parsing(tmp_path):
     assert meta["inputs"] == ["funnel", "cases"] and meta["weekly"] is True and body == "Роль"
     hyps = agents.extract_hypotheses('текст\n```json\n{"hypotheses": [{"hypothesis": "h"}]}\n```')
     assert hyps == [{"hypothesis": "h"}]
+
+
+def test_content_outliers_found(cfg):
+    from moneyball import content
+    res = content.analyze(read_csv(DEMO / "content.csv"), cfg)
+    assert res["status"] == "ok" and res["outliers"]
+    assert res["tags"]["topic"][0]["value"] == "до/после"
+
+
+def test_retention_segments(cfg):
+    from moneyball import retention
+    res = retention.analyze(read_csv(DEMO / "orders.csv"), cfg)
+    assert res["status"] == "ok"
+    assert sum(s["customers"] for s in res["segments"].values()) == res["customers"]
+
+
+def test_offer_check_lists_missing():
+    from moneyball import offer
+    res = offer.check({"checks": {"outcome": True}})
+    assert res["passed"] == 1 and len(res["fix_first"]) == 4
+
+
+def test_time_channels_get_hours_not_money():
+    funnel_stats = None
+    req = {"task": "leads", "channels_available": ["cold_telegram", "telegram_ads"], "budget_month": 50000,
+           "avg_check": 38000, "margin": 0.7, "lead_to_deal": 0.1}
+    econ = planner.unit_economics(req)
+    channels = planner.score_channels(req, {"telegram_ads": {"best_for": ["leads"], "markets": ["RU"]}}, funnel_stats)
+    plan = planner.split_budget(req, channels, econ)["plan"]
+    assert plan.get("cold_telegram", {}).get("budget", 0) == 0 or "cold_telegram" not in plan
