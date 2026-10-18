@@ -109,6 +109,8 @@ def render_report(r, cfg):
 
     cp = r["copy"]
     L.append("## 4. Слова и формулировки")
+    if cp.get("hint") and not cp.get("tested"):
+        L.append(cp["hint"])
     for t in cp.get("tested", []):
         L.append(f"- Тест {t['id']} ({t['variable']}): «{t['b']}» vs «{t['a']}» → P(B лучше)={t['p_b_better']:.2f}, "
                  f"прирост {_pct(t['lift'])}")
