@@ -1,0 +1,33 @@
+{
+  "brand": "thewater.studio",
+  "channel": "telegram_ads",
+  "persona": "fashion_founder",
+  "offer_tag": "free_sample",
+  "logo_text": "THEWATER",
+  "image": "product.png",
+  "focal": [
+    0.5,
+    0.45
+  ],
+  "sizes": [
+    "square",
+    "story"
+  ],
+  "n": 5,
+  "benefit": "контент уровня студийной съёмки без съёмки",
+  "time": "3 дня",
+  "pain": "Лента пустая между съёмками",
+  "solution": "Визуалы для бренда каждую неделю",
+  "audience": "Основателям fashion-брендов",
+  "proof": "Кейсы: VCHASE, UNAME.STORE, DAYDESIGN",
+  "offer": "Первый визуал с вашим продуктом — бесплатно",
+  "alternative": "Съёмка за 300 тысяч",
+  "sub": "AI × реальность: фото и видео для fashion и e-com",
+  "cta": "Написать в Telegram",
+  "colors": {
+    "bg": "#0E0E10",
+    "text": "#FFFFFF",
+    "accent": "#C8FF00"
+  },
+  "_comment": "Если хотите свои заголовки — добавьте \"headlines\": [{\"text\": \"…\", \"angle\": \"pain\"}]. Иначе система соберёт их по шаблонам из полей выше."
+}

@@ -1,0 +1,30 @@
+{
+  "title": "AI-фотосессия против студийной: слепой тест на 1000 человек",
+  "description": "Делаем одну и ту же капсулу двумя способами: студийная съёмка и AI-пайплайн. Показываем подписчикам и байерам вслепую, публикуем результат и бюджеты.",
+
+  "answers": {
+    "first_or_record": 1,
+    "surprise": 2,
+    "conflict": 2,
+    "exclusive_data": 2,
+    "magnitude": 1,
+    "relevance": 2,
+    "timeliness": 1,
+    "visual": 2,
+    "emotion": 1,
+    "celebrity_elite": 0,
+    "practical_value": 2,
+    "story": 2,
+    "brand_link": 2,
+    "proof": 2
+  },
+  "red_flags": {
+    "legal_risk": false,
+    "misleading": false,
+    "safety": false,
+    "offends_group": false,
+    "cannot_deliver": false
+  },
+
+  "_comment": "answers: 0 — нет, 1 — частично, 2 — да. Вопросы к каждому критерию — в moneyball/pr.py (CRITERIA)."
+}

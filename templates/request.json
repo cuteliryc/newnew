@@ -1,0 +1,18 @@
+{
+  "task": "leads",
+  "business_model": "creative_services",
+  "industry": "fashion",
+  "audience": "основатели fashion и e-com брендов, 1–20 человек, РФ",
+  "market": "RU",
+  "channels_available": ["telegram_ads", "vk_ads", "yandex_direct", "cold_telegram", "cold_email", "instagram_organic"],
+  "budget_month": 60000,
+  "currency": "RUB",
+  "avg_check": 38000,
+  "margin": 0.7,
+  "repeat_purchases": 2,
+  "lead_to_deal": null,
+  "sales_cycle_days": 14,
+  "has_tracking": true,
+
+  "_comment": "task: leads | sales | awareness | retention | pr. lead_to_deal: null — система возьмёт из ваших данных funnel.csv, а если их нет — допущение."
+}

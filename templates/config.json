@@ -1,0 +1,17 @@
+{
+  "currency": "RUB",
+  "hourly_rate": 1500,
+  "gross_margin": 0.7,
+  "prior_events": 5,
+  "creatives": {
+    "result": "leads"
+  },
+  "budget": {
+    "outcome": "revenue",
+    "outcome_is_revenue": true
+  },
+  "llm": {
+    "backend": "codex",
+    "model": null
+  }
+}

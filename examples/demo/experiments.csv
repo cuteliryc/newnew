@@ -1,0 +1,5 @@
+id,layer,hypothesis,variable,variant_a,variant_b,metric,start,end,planned_n_per_variant,n_a,conv_a,n_b,conv_b,status,result,learning
+E1,copy,Цифра в заголовке поднимет заявки,headline,Контент без съёмки,Контент без съёмки за 3 дня,leads/impr,2026-09-01,2026-09-21,20000,21000,24,20500,37,done,win,конкретный срок работает
+E2,offer,Бесплатный визуал лучше скидки 20%,offer,скидка 20%,бесплатный визуал,deals/lead,2026-08-01,2026-09-01,60,62,6,64,11,done,win,взаимность сильнее скидки
+E3,creative,Видео лучше статики,format,static,video,leads/impr,2026-09-10,,30000,14000,17,13800,24,running,,
+E4,copy,Вопрос в заголовке лучше утверждения,headline,утверждение,вопрос,leads/impr,2026-08-10,2026-08-30,20000,20100,26,20300,24,done,flat,разницы нет
