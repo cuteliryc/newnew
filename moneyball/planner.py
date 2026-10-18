@@ -9,6 +9,8 @@
 import json
 from pathlib import Path
 
+from . import offer as offer_mod
+from . import pr as pr_mod
 from .io import num
 
 EVIDENCE_W = {"strong": 1.5, "medium": 1.2, "weak": 0.8, "vendor": 0.7}
@@ -126,13 +128,29 @@ def score_channels(req, catalog, funnel_stats=None):
             else:
                 score -= 2
                 why.append("ваши данные: пока убыточен")
+            hours = (g["cost"] - g.get("spend", 0)) / (req.get("hourly_rate") or 1500)
+            if hours > 0 and g.get("spend", 0) == 0:
+                profit_hour = (g["realized_profit"] + g["cost"]) / hours
+                why.append(f"маржа на час работы ≈{profit_hour:,.0f}".replace(",", " "))
+        cost_type = info.get("cost_type")
+        if not cost_type and key in own:
+            g = own[key]
+            cost_type = "time" if g["cost"] > 0 and g.get("spend", 0) == 0 else "money"
+        if not cost_type:
+            cost_type = "time" if key.startswith(("cold_", "organic_")) or key.endswith("_organic") else "money"
         scored.append({"channel": key, "score": score, "why": why, "info": info,
-                       "own": own.get(key)})
+                       "own": own.get(key), "cost_type": cost_type})
+    # Внутри своих данных — бонус за место по прибыли на 1000 (самые «недооценённые» наверх).
+    ranked_own = sorted((c for c in scored if c.get("own") and c["own"]["profit_per_1000"] > 0),
+                        key=lambda c: c["own"]["profit_per_1000"], reverse=True)
+    for i, c in enumerate(ranked_own[:3]):
+        c["score"] += 3 - i
     scored.sort(key=lambda c: c["score"], reverse=True)
-    for i, c in enumerate(scored):
-        if c.get("role") == "skip":
-            continue
-        c["role"] = "core" if i < 2 and c["score"] >= 3 else "test" if c["score"] > 0 else "skip"
+    # Роли раздаются отдельно: платные каналы делят деньги, «часовые» — ваше время.
+    for cost_type, n_core in (("money", 2), ("time", 1)):
+        group = [c for c in scored if c.get("cost_type") == cost_type and c.get("role") != "skip"]
+        for i, c in enumerate(group):
+            c["role"] = "core" if i < n_core and c["score"] >= 3 else "test" if c["score"] > 0 else "skip"
     return scored
 
 
@@ -142,10 +160,16 @@ def split_budget(req, channels, econ, exploration_share=0.1):
         return {"note": "бюджет не указан — распределение не считаю"}
     explore = budget * exploration_share
     test_need = MIN_LEADS_FOR_DECISION * econ["target_cpl"] if econ["target_cpl"] else 0
-    core = [c for c in channels if c.get("role") == "core"]
-    tests = [c for c in channels if c.get("role") == "test"]
+    paid = [c for c in channels if c.get("cost_type") != "time"]
+    core = [c for c in paid if c.get("role") == "core"]
+    tests = [c for c in paid if c.get("role") == "test"]
     available = budget - explore
     plan, notes = {}, []
+    for c in channels:
+        if c.get("cost_type") == "time" and c.get("role") in ("core", "test"):
+            plan[c["channel"]] = {"role": "ядро" if c["role"] == "core" else "тест", "budget": 0,
+                                  "hours_week": 5 if c["role"] == "core" else 3,
+                                  "note": "канал стоит времени, а не денег"}
     # Тестов берём столько, сколько бюджет реально позволяет довести до вывода.
     affordable = int(available * 0.4 // test_need) if test_need else len(tests)
     if tests and affordable < len(tests):
@@ -214,23 +238,60 @@ def hypotheses_from_cases(cases, econ, req):
     return rows
 
 
-def build_plan(req, catalog, cases, funnel_stats=None, creative_stats=None):
+def calendar(req, channels, has_data):
+    """Первые 4 недели: что делать по порядку. Правила — практика системы [ДОПУЩЕНИЕ]."""
+    core = [c["channel"] for c in channels if c.get("role") == "core"]
+    tests = [c["channel"] for c in channels if c.get("role") == "test"]
+    return [
+        {"week": 1, "focus": "Фундамент",
+         "do": ["Метки источника на каждую заявку (UTM / поле в CRM)" if not req.get("has_tracking") else
+                "Проверить, что у каждой заявки есть источник и этап в CRM",
+                "Заполнить оффер по чек-листу и закрыть 2 главных пробела",
+                "Снимок объявлений 3–5 конкурентов в competitors.csv",
+                f"Запуск ядра: {', '.join(core) or 'выбрать 1 канал'} — 3–5 креативов на разные углы"]},
+        {"week": 2, "focus": "Креатив и тексты",
+         "do": ["Баннеры по брифу (moneyball banners) с разными углами, не синонимами",
+                "Контент: 3–4 публикации на темы, которые уже залетали (или на 3 разных темы для разведки)",
+                f"Тестовые каналы: {', '.join(tests) or 'нет'} — бюджет на вывод, не меньше"]},
+        {"week": 3, "focus": "Первые выводы",
+         "do": ["weekly: воронка в деньгах — где самый дорогой разрыв",
+                "Выключить креативы, которые с вероятностью ≥90% хуже остальных (при достаточном объёме)",
+                "Запустить 1 тест оффера (снятие риска / пробник)"]},
+        {"week": 4, "focus": "Масштаб и PR",
+         "do": ["Перенести 10–30% бюджета в канал с лучшей отдачей последнего рубля",
+                "Выбрать 1 PR-идею с оценкой ≥60 и подготовить доказательства",
+                "Записать выводы в experiments.csv — это ваши будущие априорные вероятности"
+                + ("" if has_data else "; без данных выводы этой недели предварительные")]},
+    ]
+
+
+def build_plan(req, catalog, cases, funnel_stats=None, creative_stats=None, engine=None):
+    engine = engine or {}
     econ = unit_economics(req, funnel_stats)
     channels = score_channels(req, catalog, funnel_stats)
     budget = split_budget(req, channels, econ)
-    matched = match_cases(req, cases)
+    matched = match_cases(req, [c for c in cases if not c.get("news_values")])
     angles = []
     if creative_stats and creative_stats.get("status") == "ok":
         angles = [w for w in creative_stats.get("winners", []) if w["tag"] in ("angle", "hook")]
+    offer_check = offer_mod.check(req["offer"], engine.get("competitors")) if req.get("offer") else None
+    pr_ideas = pr_mod.generate_ideas(req.get("pr", {}), cases) if req.get("pr") else []
+    content = engine.get("content") if (engine.get("content") or {}).get("status") == "ok" else None
+    retention = engine.get("retention") if (engine.get("retention") or {}).get("status") == "ok" else None
     return {
         "request": req,
         "unit_economics": econ,
+        "offer": offer_check,
         "channels": [{k: v for k, v in c.items() if k != "info"} for c in channels],
         "budget": budget,
         "cases": [{k: c.get(k) for k in ("id", "title", "brand", "market", "channels", "what_they_did",
                                          "mechanism", "metrics", "transferable_lesson", "test_to_run",
                                          "evidence", "source_url", "_match")} for c in matched],
         "proven_angles": angles,
+        "content": {"outliers": content["outliers"][:5], "tags": content["tags"]} if content else None,
+        "retention": {k: retention[k] for k in ("repeat_rate", "avg_orders", "profit_per_customer", "segments")}
+        if retention else None,
+        "pr_ideas": [i for i in pr_ideas if i.get("idea")][:4],
         "default_tests": [
             "Сначала тестируйте крупные различия углов (боль / выгода / доказательство / скорость / цена), "
             "а не отдельные слова: эффект слова — проценты, угла — десятки процентов.",
@@ -238,5 +299,6 @@ def build_plan(req, catalog, cases, funnel_stats=None, creative_stats=None):
             "а не по CTR и цене клика.",
             "Каждой заявке — источник (UTM / метка в CRM), иначе связать рекламу с деньгами нельзя.",
         ],
+        "calendar": calendar(req, channels, bool(funnel_stats and funnel_stats.get("status") == "ok")),
         "hypotheses": hypotheses_from_cases(matched, econ, req),
     }

@@ -20,5 +20,35 @@
   "lead_to_deal": null,
   "sales_cycle_days": 14,
   "has_tracking": true,
-  "_comment": "task: leads | sales | awareness | retention | pr. lead_to_deal: null — система возьмёт из ваших данных funnel.csv, а если их нет — допущение."
+  "_comment": "task: leads | sales | awareness | retention | pr. lead_to_deal: null — система возьмёт из ваших данных funnel.csv, а если их нет — допущение.",
+  "offer": {
+    "text": "AI-контент для fashion-брендов: визуалы и видео уровня съёмки за 2–3 дня. Первый визуал бесплатно.",
+    "checks": {
+      "outcome": true,
+      "audience": true,
+      "time": true,
+      "effort": false,
+      "proof": true,
+      "risk_reversal": true,
+      "price_clarity": false,
+      "alternative": true,
+      "distinct": false,
+      "honest_scarcity": true
+    },
+    "_comment": "checks: true — пункт выполнен. Список пунктов — moneyball/offer.py (CHECKS)."
+  },
+  "pr": {
+    "brand": "thewater.studio",
+    "capability": "AI-пайплайн thewater.studio",
+    "human_pro": "студийный фотограф с командой",
+    "task": "кампания для одной капсулы бренда",
+    "market": "fashion-контент в России",
+    "feat": "полную кампанию бренда без единой физической съёмки",
+    "data_asset": "100 карточек товаров fashion-брендов на маркетплейсах",
+    "finding": "какой визуал продаёт лучше — студийный или AI",
+    "product": "AI-пайплайн",
+    "extreme": "кампания за 24 часа от брифа до публикации",
+    "secret": "реальную себестоимость AI-съёмки против студийной",
+    "_comment": "Заполните то, что реально можете сделать — система подставит в шаблоны идей для СМИ."
+  }
 }

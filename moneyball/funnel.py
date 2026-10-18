@@ -47,6 +47,7 @@ def _metrics(s, base_rates, base_rpd, cfg, stages, rev):
         "volume": top,
         "deals": deals,
         "cost": cost,
+        "spend": s["spend"],
         "revenue": s[rev],
         "realized_profit": s[rev] * margin - cost,
         "rates_raw": raw,

@@ -3,7 +3,7 @@
 from datetime import date
 from pathlib import Path
 
-from . import budget, competitors, copy_words, creative, experiments, funnel
+from . import budget, competitors, content, copy_words, creative, experiments, funnel, retention
 from .io import read_csv, write_json
 
 
@@ -29,6 +29,8 @@ def run(cfg, data_dir="data", out_dir="outputs", day=None):
         "copy": copy_words.analyze(creatives_rows, experiments_rows, cfg),
         "competitors": competitors.analyze(read_csv(d / "competitors.csv"), creatives_rows, cfg),
         "experiments": experiments.analyze(experiments_rows, read_csv(d / "hypotheses.csv"), cfg),
+        "content": content.analyze(read_csv(d / "content.csv"), cfg),
+        "retention": retention.analyze(read_csv(d / "orders.csv"), cfg),
     }
     target = Path(out_dir) / result["date"]
     write_json(target / "engine.json", result)
@@ -154,5 +156,32 @@ def render_report(r, cfg):
         for h in e["queue"][:5]:
             L.append(f"- [{h.get('layer')}] {h.get('hypothesis')} — ценность {_money(h['expected_value'], cfg)}, "
                      f"P(победы) {h['p_win']:.0%}")
+    L.append("")
+
+    ct = r["content"]
+    L.append("## 7. Контент и соцсети")
+    if ct["status"] != "ok":
+        L.append(ct.get("hint", ""))
+    else:
+        L.append(f"Публикаций: {ct['posts']}. Залетевшие (×{cfg['content']['outlier_x']:.0f} от медианы и выше):")
+        for o in ct["outliers"][:6]:
+            L.append(f"- {o.get('date')} {o.get('platform')} «{o.get('topic')}» ({o.get('format')}, хук {o.get('hook')}): "
+                     f"×{o['x_median']:.1f}")
+        for tag, items in ct["tags"].items():
+            best = items[0]
+            L.append(f"- по {tag}: сильнее всего «{best['value']}» (медиана ×{best['median_x']:.1f}, "
+                     f"залетает {best['hit_rate']:.0%} публикаций, n={best['posts']})")
+        L.append(f"\n_{ct['rule']}_")
+    L.append("")
+
+    rt = r["retention"]
+    L.append("## 8. Клиенты и повторные продажи")
+    if rt["status"] != "ok":
+        L.append(rt.get("hint", ""))
+    else:
+        L.append(f"Клиентов {rt['customers']}, повторно купили {rt['repeat_rate']:.0%}, "
+                 f"в среднем {rt['avg_orders']:.1f} заказа, прибыль с клиента {_money(rt['profit_per_customer'], cfg)}.")
+        for seg, s in sorted(rt["segments"].items(), key=lambda kv: -kv[1]["revenue"]):
+            L.append(f"- {seg}: {s['customers']} клиентов, выручка {_money(s['revenue'], cfg)}")
     L.append("")
     return "\n".join(L)

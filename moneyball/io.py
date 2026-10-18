@@ -53,6 +53,12 @@ DEFAULT_CONFIG = {
         "base_win_rate": 0.2,
         "evidence_weight": {"strong": 1.5, "medium": 1.0, "weak": 0.7, "none": 0.5},
     },
+    "content": {
+        "metric": "reach",
+        "window": 10,
+        "outlier_x": 3.0,
+        "tags": ["format", "topic", "hook"],
+    },
     "design": {
         "sizes": {
             "square": [1080, 1080],

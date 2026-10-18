@@ -168,6 +168,40 @@ def experiments():
     ])
 
 
+def content():
+    topics = {"до/после": 2.5, "разбор кейса": 1.6, "манифест": 1.2, "процесс": 1.0, "новости AI": 0.8}
+    formats = {"reels": 1.4, "carousel": 1.0, "post": 0.7}
+    rows = []
+    day = date(2026, 7, 13)
+    for i in range(48):
+        topic = list(topics)[i % len(topics)]
+        fmt = list(formats)[(i // 2) % len(formats)]
+        reach = int(rng.lognormal(math.log(900 * topics[topic] * formats[fmt]), 0.6))
+        rows.append({"date": (day + timedelta(days=2 * i)).isoformat(), "platform": "instagram",
+                     "post_id": f"P{i:03d}", "format": fmt, "topic": topic,
+                     "hook": "результат" if topic == "до/после" else "вопрос" if i % 3 else "цифра",
+                     "reach": reach, "likes": int(reach * 0.05), "comments": int(reach * 0.004),
+                     "shares": int(reach * (0.02 if topic == "манифест" else 0.006)),
+                     "saves": int(reach * 0.01), "follows": int(reach * 0.003),
+                     "leads": int(rng.binomial(max(reach // 400, 1), 0.3)), "url": ""})
+    write("content.csv", rows)
+
+
+def orders():
+    rows = []
+    for c in range(60):
+        first = date(2026, 3, 1) + timedelta(days=int(rng.integers(0, 180)))
+        n_orders = 1 + int(rng.poisson(0.7))
+        for k in range(n_orders):
+            d = first + timedelta(days=int(30 * k + rng.integers(0, 20)))
+            if d > date(2026, 10, 15):
+                break
+            rows.append({"customer_id": f"K{c:03d}", "date": d.isoformat(),
+                         "revenue": int(rng.choice([22000, 38000, 85000, 60000])),
+                         "offer": "ai_content", "channel": "cold_telegram" if c % 2 else "telegram_ads"})
+    write("orders.csv", rows)
+
+
 def product_image():
     W = H = 900
     img = Image.new("RGBA", (W, H), (205, 198, 188, 255))
@@ -204,6 +238,8 @@ if __name__ == "__main__":
     creatives()
     competitors()
     experiments()
+    content()
+    orders()
     product_image()
     configs()
     print(f"Демо-данные: {OUT}")
